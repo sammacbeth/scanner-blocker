@@ -1,0 +1,14 @@
+{
+  "pageActionHeaderBlocking": {
+    "message": "Local resource requests blocked:"
+  },
+  "pageActionHeaderAllowing": {
+    "message": "Local resource requests allowed:"
+  },
+  "pageActionButtonAllow": {
+    "message": "Allow on this site"
+  },
+  "pageActionButtonBlock": {
+    "message": "Block on this site"
+  }
+}
