@@ -1,4 +1,4 @@
-const localhosts = new Set(["127.0.0.1", "localhost", "[::1]"]);
+const localhosts = new Set(["127.0.0.1", "localhost", "[::1]", "::1"]);
 const offendingTabs = new Map();
 const firstPartyAllowList = new Set();
 
@@ -43,6 +43,22 @@ browser.webRequest.onBeforeRequest.addListener(
   },
   ["blocking"]
 );
+
+browser.webRequest.onHeadersReceived.addListener(
+  (details) => {
+    if (localhosts.has(details.ip)) {
+      const hostname = new URL(details.url).hostname;
+      if (!localhosts.has(hostname)) {
+        console.log('add new localhost alias', hostname);
+        localhosts.add(hostname);
+        browser.webRequest.onBeforeRequest.addListener(requestListener, { urls: [`http://${hostname}/*`] }, ['blocking'])
+      }
+    }
+  },
+  {
+    urls: ['<all_urls>'],
+  },
+)
 
 window.offendingTabs = offendingTabs;
 window.firstPartyAllowList = firstPartyAllowList;
